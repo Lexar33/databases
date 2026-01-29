@@ -1,17 +1,34 @@
-version: '3.8'
+version: '1.0'
 services:
-  database:
-    image: mariadb:11.8
-    container_name: mdb
-    ports:
-      - "3306:3306"
-    environment:
-      MARIADB_ROOT_PASSWORD: "Password1234"
-    volumes:
-      - ./mariadb-data:/var/lib/mysql # Bind mount to a local directory
-      # Or use a named volume:
-      # - mariadb_volume:/var/lib/mysql
+  #database:
+  #  image: mariadb:11.8
+  #  container_name: mdb
+  #  ports:
+  #    - "3306:3306"
+  #  environment:
+  #    MARIADB_ROOT_PASSWORD: "Password1234"
+  #  volumes:
+  #    - ./mariadb_data:/var/lib/mysql # Bind mount to a local directory
 
-# Define named volumes here if using Option 2
-# volumes:
-#   mariadb_volume:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: Password1234  
+      MYSQL_DATABASE: db_gestion
+    ports:
+     - "3306:3306"
+    volumes:
+      # This maps a named volume 'mysql_data' to the MySQL data directory inside the container
+      - ./mysql_data:/var/lib/mysql
+
+  postgresql:
+    image: postgres:17.1
+    restart: always
+    container_name : postgres_db
+    ports:
+      - "5432:5432"
+    environment:      
+      POSTGRES_PASSWORD: Password1234
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
